@@ -119,6 +119,8 @@ int main(void)
   MX_NVIC_Init();
 
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Init(&htim4);
+  BSP_Motor_Init();
 
   /* USER CODE END 2 */
 
@@ -129,6 +131,7 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+    
 
   }
   /* USER CODE END 3 */
@@ -235,8 +238,31 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_GPIO_EXTI_Callback could be implemented in the user file
    */
+  if(VerticalLimitInttrupt_Pin == GPIO_Pin)
+  {
+    HAL_Delay(1);
+    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(VerticalLimitInttrupt_GPIO_Port,VerticalLimitInttrupt_Pin))
+    {
+      gVerticalLimitFlag = 1;        //闸机处于开启状态
+    }
+    else
+    {
+      gVerticalLimitFlag = 0;
+    }    
+  }
   
-  
+  if(HorizontalLimitInttrupt_Pin == GPIO_Pin)
+  {
+    HAL_Delay(1);
+    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(HorizontalLimitInttrupt_GPIO_Port,HorizontalLimitInttrupt_Pin))
+    {
+      gHorizontalLimitFlag = 1;         //闸机处于关闭状态
+    }
+    else
+    {
+      gHorizontalLimitFlag = 0;         
+    }    
+  } 
 }
 
 /**
@@ -253,9 +279,27 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
    */
   if(htim->Instance == htim4.Instance)
   {
-    
+    if(1 == gMotorState)
+    {
+      if(GPIO_PIN_SET == HAL_GPIO_ReadPin(VerticalLimitInttrupt_GPIO_Port,VerticalLimitInttrupt_Pin))
+      {
+        gVerticalLimitFlag = 1;        //闸机处于开启状态
+      }
+      else
+      {
+        gVerticalLimitFlag = 0;
+      }
+      
+      if(GPIO_PIN_SET == HAL_GPIO_ReadPin(HorizontalLimitInttrupt_GPIO_Port,HorizontalLimitInttrupt_Pin))
+      {
+        gHorizontalLimitFlag = 1;         //闸机处于关闭状态
+      }
+      else
+      {
+        gHorizontalLimitFlag = 0;         
+      } 
+    }
   }
-
 }
 
 /* USER CODE END 4 */

@@ -78,6 +78,10 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
+    typedef enum {
+      UPDir = 0,
+      DownDir = 1
+    }RunDir;
 
 /* USER CODE END Private defines */
 

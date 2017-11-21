@@ -1,20 +1,20 @@
-"E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\Src\usbd_conf.c"
+"C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\Src\usbd_conf.c"
 -std=c11
 -ferror-limit=0
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM/../Inc
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM/../Inc
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM/../Middlewares/ST/STM32_USB_Device_Library/Core/Inc
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM/../Middlewares/ST/STM32_USB_Device_Library/Core/Inc
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM/../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM/../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM/../Drivers/CMSIS/Include
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM/../Drivers/CMSIS/Include
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Include
 -I
@@ -22,19 +22,19 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc\c
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\Inc
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\Inc
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\Drivers\STM32F1xx_HAL_Driver\Inc
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\Drivers\STM32F1xx_HAL_Driver\Inc
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\Middlewares\ST\STM32_USB_Device_Library\Core\Inc
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\Middlewares\ST\STM32_USB_Device_Library\Core\Inc
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\Drivers\CMSIS\Device\ST\STM32F1xx\Include
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\Drivers\CMSIS\Device\ST\STM32F1xx\Include
 -I
-E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\Drivers\CMSIS\Include
+C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\Drivers\CMSIS\Include
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Include
 -D__CHAR_BITS__=8

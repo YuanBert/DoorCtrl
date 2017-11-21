@@ -111,17 +111,51 @@ void MX_GPIO_Init(void)
 /* USER CODE BEGIN 2 */
 void BSP_Motor_Init(void)
 {
-
+     HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_SET); 
+     HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_SET);
+     HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_SET);
+     gMotorState = 0;
+    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(HorizontalLimitInttrupt_GPIO_Port,HorizontalLimitInttrupt_Pin))
+    {
+      gHorizontalLimitFlag = 1;         //闸机处于关闭状态
+    }
+    else
+    {
+      gHorizontalLimitFlag = 0;         
+    }
+    
+    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(VerticalLimitInttrupt_GPIO_Port,VerticalLimitInttrupt_Pin))
+    {
+      gVerticalLimitFlag = 1;        //闸机处于开启状态
+    }
+    else
+    {
+      gVerticalLimitFlag = 0;
+    }
 }
 
-void BSP_Motor_Running(uint8_t dir)
-{
-
+void BSP_Motor_Running(RunDir dir)
+{ 
+  if(1 == dir) //如果dir == 1，表示电机UP转
+  {
+    HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_RESET); 
+    HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);
+    
+  }
+  else   //电机down转
+  {
+    HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_SET); 
+    HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);
+  }
+  gMotorDir = dir;      //表示电机转动的方向
+  gMotorState = 1;      //表示电机处在转动转态
 }
 
 void BSP_Motor_Stop(void)
 {
-
+    HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_RESET); 
+    HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_SET);
+    gMotorState = 0;
 }
 
 void BSP_Motor_Start(void)

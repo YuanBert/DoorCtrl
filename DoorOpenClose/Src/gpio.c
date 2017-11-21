@@ -116,7 +116,7 @@ void BSP_Motor_Init(void)
 
 void BSP_Motor_Running(uint8_t dir)
 {
-  
+
 }
 
 void BSP_Motor_Stop(void)

@@ -65,8 +65,10 @@
 #define MotorFRPin_GPIO_Port GPIOB
 #define HorizontalLimitInttrupt_Pin GPIO_PIN_10
 #define HorizontalLimitInttrupt_GPIO_Port GPIOB
+#define HorizontalLimitInttrupt_EXTI_IRQn EXTI15_10_IRQn
 #define VerticalLimitInttrupt_Pin GPIO_PIN_11
 #define VerticalLimitInttrupt_GPIO_Port GPIOB
+#define VerticalLimitInttrupt_EXTI_IRQn EXTI15_10_IRQn
 
 /* ########################## Assert Selection ############################## */
 /**

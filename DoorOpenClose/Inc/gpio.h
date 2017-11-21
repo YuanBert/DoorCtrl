@@ -69,6 +69,11 @@
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+void BSP_Motor_Init(void);
+void BSP_Motor_Running(uint8_t dir);
+void BSP_Motor_Stop(void);
+void BSP_Motor_Start(void);
+void BSP_AtmosphereLights(void);
 
 /* USER CODE END Prototypes */
 

@@ -83,10 +83,10 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port, MotorBRKPin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port, MotorBRKPin_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, MotorENPin_Pin|MotorFRPin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, MotorENPin_Pin|MotorFRPin_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = MotorBRKPin_Pin;
@@ -136,7 +136,7 @@ void BSP_Motor_Init(void)
 
 void BSP_Motor_Running(RunDir dir)
 { 
-  if(1 == dir) //如果dir == 1，表示电机UP转
+  if(UPDir == dir) //如果dir == 1，表示电机UP转
   {
     HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_RESET); 
     HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);

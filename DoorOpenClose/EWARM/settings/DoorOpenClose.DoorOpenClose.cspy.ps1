@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM\settings\DoorOpenClose.DoorOpenClose.general.xcl" --backend -f "C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM\settings\DoorOpenClose.DoorOpenClose.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM\settings\DoorOpenClose.DoorOpenClose.general.xcl" --backend -f "E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM\settings\DoorOpenClose.DoorOpenClose.driver.xcl" 
 }
 else
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM\settings\DoorOpenClose.DoorOpenClose.general.xcl" --debug_file=$debugfile --backend -f "C:\Users\Zgeny\Desktop\DoorCtrl\DoorOpenClose\EWARM\settings\DoorOpenClose.DoorOpenClose.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM\settings\DoorOpenClose.DoorOpenClose.general.xcl" --debug_file=$debugfile --backend -f "E:\Users\17657\Documents\GitHub\DoorCtrl\DoorOpenClose\EWARM\settings\DoorOpenClose.DoorOpenClose.driver.xcl" 
 }

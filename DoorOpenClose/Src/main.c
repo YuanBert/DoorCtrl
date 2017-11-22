@@ -68,6 +68,9 @@ uint8_t gVerticalLimitFlag = 0;
 uint8_t gHorizontalLimitFlag = 0;
 uint8_t gMotorDir = 0;
 uint8_t gMotorState = 0;
+uint32_t ADC_Value[90];
+uint8_t i;
+uint32_t ad1,ad2;
 
 /* USER CODE END PV */
 
@@ -119,6 +122,7 @@ int main(void)
   MX_NVIC_Init();
 
   /* USER CODE BEGIN 2 */
+  //HAL_ADC_Start_DMA(&hadc1,(uint32_t*)&ADC_Value,90);
   HAL_TIM_Base_Init(&htim4);
   BSP_Motor_Init();
 
@@ -131,7 +135,18 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+    HAL_Delay(2000);
+    BSP_Motor_Running(UPDir);
+    HAL_Delay(1500);
+    BSP_Motor_Running(DownDir);
     
+    if(0 == gMotorState)
+    {
+      if(0 == gVerticalLimitFlag && 0 == gHorizontalLimitFlag)
+      {
+        BSP_Motor_Running(UPDir);
+      }
+    }
 
   }
   /* USER CODE END 3 */
@@ -244,6 +259,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     if(GPIO_PIN_SET == HAL_GPIO_ReadPin(VerticalLimitInttrupt_GPIO_Port,VerticalLimitInttrupt_Pin))
     {
       gVerticalLimitFlag = 1;        //闸机处于开启状态
+      gMotorState = 0;
     }
     else
     {
@@ -257,6 +273,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     if(GPIO_PIN_SET == HAL_GPIO_ReadPin(HorizontalLimitInttrupt_GPIO_Port,HorizontalLimitInttrupt_Pin))
     {
       gHorizontalLimitFlag = 1;         //闸机处于关闭状态
+      gMotorState = 0;
     }
     else
     {
@@ -300,6 +317,21 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       } 
     }
   }
+}
+
+/**
+  * @brief  Conversion complete callback in non blocking mode 
+  * @param  hadc: ADC handle
+  * @retval None
+  */
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hadc);
+  /* NOTE : This function should not be modified. When the callback is needed,
+            function HAL_ADC_ConvCpltCallback must be implemented in the user file.
+   */
+  
 }
 
 /* USER CODE END 4 */

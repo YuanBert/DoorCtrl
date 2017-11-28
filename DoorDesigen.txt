@@ -11,6 +11,8 @@
 			uint8_t		RunningState;					//运行状态  0-停止 1-运行
 			uint8_t		RunDir;							//运行方向  0-Down 1-Up
 			uint16_t	RunningSpeed;					//开闸速度
+			uint8_t 	VStartFlag;						//垂直启动标记位（扩展）
+			uint8_t     HStartFlag;						//水平启动标记位（扩展）
 			
 		}GATEMACHINE,*pGATEMACHINE;
 		
@@ -44,6 +46,10 @@
 			
 		}
 		
-		
+3.外接板设计：
+	VCC | VerOutput | GND  ++++  VCC | HorOutput | GND  
+	
+	GND | Motor_EN  | Motor_REV | Motor_BRK 
+	
 		
 		

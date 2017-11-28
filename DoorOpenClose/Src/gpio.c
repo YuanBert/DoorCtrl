@@ -50,10 +50,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "gpio.h"
 /* USER CODE BEGIN 0 */
-extern uint8_t gVerticalLimitFlag;
-extern uint8_t gHorizontalLimitFlag;
-extern uint8_t gMotorDir;
-extern uint8_t gMotorState;
+extern GATEMACHINE gGateMachine;
 
 /* USER CODE END 0 */
 
@@ -83,10 +80,10 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port, MotorBRKPin_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port, MotorBRKPin_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, MotorENPin_Pin|MotorFRPin_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, MotorENPin_Pin|MotorFRPin_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = MotorBRKPin_Pin;
@@ -106,6 +103,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PBPin PBPin */
+  GPIO_InitStruct.Pin = HorInputSingle_Pin|VerInputSingle_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 2 */
@@ -113,49 +116,42 @@ void BSP_Motor_Init(void)
 {
      HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_SET); 
      HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_SET);
-     HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_SET);
-     gMotorState = 0;
-    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(HorizontalLimitInttrupt_GPIO_Port,HorizontalLimitInttrupt_Pin))
-    {
-      gHorizontalLimitFlag = 1;         //闸机处于关闭状态
-    }
-    else
-    {
-      gHorizontalLimitFlag = 0;         
-    }
-    
-    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(VerticalLimitInttrupt_GPIO_Port,VerticalLimitInttrupt_Pin))
-    {
-      gVerticalLimitFlag = 1;        //闸机处于开启状态
-    }
-    else
-    {
-      gVerticalLimitFlag = 0;
-    }
+     HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_RESET);
+     
+     HAL_Delay(10);
+     //初始化闸机位置
+     //if (0 == gGateMachine.HorizontalRasterState && 0 == gGateMachine.VerticalRasterState)
+     //{
+     
+        gGateMachine.RunningState = 1;
+        gGateMachine.RunDir = 0;
+        
+     //}
+     
 }
 
 void BSP_Motor_Running(RunDir dir)
 { 
   if(UPDir == dir) //如果dir == 1，表示电机UP转
   {
+    HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_RESET);
     HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_RESET); 
     HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);
     
   }
   else   //电机down转
   {
+    HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_RESET);
     HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_SET); 
     HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);
   }
-  gMotorDir = dir;      //表示电机转动的方向
-  gMotorState = 1;      //表示电机处在转动转态
 }
 
 void BSP_Motor_Stop(void)
 {
+    HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_RESET);  
     HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_RESET); 
     HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_SET);
-    gMotorState = 0;
 }
 
 void BSP_Motor_Start(void)

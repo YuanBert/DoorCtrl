@@ -1,6 +1,6 @@
 Configuration	DoorOpenClose
 STM32CubeMX 	4.23.0
-Date	11/21/2017
+Date	11/28/2017
 MCU	STM32F103RCTx
 
 
@@ -32,6 +32,8 @@ Pin Nb	PINs	FUNCTIONs	LABELs
 27	PB1	GPIO_Output	MotorFRPin
 29	PB10	GPIO_EXTI10	HorizontalLimitInttrupt
 30	PB11	GPIO_EXTI11	VerticalLimitInttrupt
+33	PB12	GPIO_EXTI12	HorInputSingle
+34	PB13	GPIO_EXTI13	VerInputSingle
 42	PA9	USART1_TX	
 43	PA10	USART1_RX	
 44	PA11	USB_DM	

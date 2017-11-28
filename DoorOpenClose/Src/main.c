@@ -64,13 +64,12 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-uint8_t gVerticalLimitFlag = 0;
-uint8_t gHorizontalLimitFlag = 0;
-uint8_t gMotorDir = 0;
-uint8_t gMotorState = 0;
+uint32_t gTIM4Cnt = 0;
 uint32_t ADC_Value[90];
 uint8_t i;
 uint32_t ad1,ad2;
+
+GATEMACHINE gGateMachine; 
 
 /* USER CODE END PV */
 
@@ -123,7 +122,8 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
   //HAL_ADC_Start_DMA(&hadc1,(uint32_t*)&ADC_Value,90);
-  HAL_TIM_Base_Init(&htim4);
+  //HAL_TIM_Base_Init(&htim4);
+  HAL_TIM_Base_Start_IT(&htim4);
   BSP_Motor_Init();
 
   /* USER CODE END 2 */
@@ -135,18 +135,37 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-    HAL_Delay(2000);
-    BSP_Motor_Running(UPDir);
-    HAL_Delay(1500);
-    BSP_Motor_Running(DownDir);
-    
-    if(0 == gMotorState)
+    if(1 == gGateMachine.RunningState)
     {
-      if(0 == gVerticalLimitFlag && 0 == gHorizontalLimitFlag)
+      if(1 == gGateMachine.RunDir)
       {
-        BSP_Motor_Running(UPDir);
+        HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_RESET); 
+        HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);
+        gGateMachine.RunningState = 0;
+      }
+      
+      if(0 == gGateMachine.RunDir)
+      {
+        HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_SET); 
+        HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);
+        gGateMachine.RunningState = 0;
       }
     }
+    
+    gGateMachine.RunningState = 1;
+    HAL_Delay(8000);
+    
+//    BSP_Motor_Running(UPDir);
+//    HAL_Delay(1500);
+//    BSP_Motor_Stop();
+//    HAL_Delay(2500);
+//    BSP_Motor_Running(DownDir);
+//    HAL_Delay(1500);
+//    BSP_Motor_Stop();      
+//    HAL_Delay(2500);
+
 
   }
   /* USER CODE END 3 */
@@ -253,33 +272,34 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_GPIO_EXTI_Callback could be implemented in the user file
    */
-  if(VerticalLimitInttrupt_Pin == GPIO_Pin)
+  if(VerInputSingle_Pin == GPIO_Pin)
   {
-    HAL_Delay(1);
-    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(VerticalLimitInttrupt_GPIO_Port,VerticalLimitInttrupt_Pin))
-    {
-      gVerticalLimitFlag = 1;        //闸机处于开启状态
-      gMotorState = 0;
-    }
-    else
-    {
-      gVerticalLimitFlag = 0;
-    }    
+     HAL_Delay(2);
+      
+//      if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(VerInputSingle_GPIO_Port,VerInputSingle_Pin))
+//      {
+        gGateMachine.VerticalRasterState = 1;
+        gGateMachine.HorizontalRasterState = 0;
+        BSP_Motor_Stop();
+        gGateMachine.RunningState = 0;
+        gGateMachine.RunDir = 1;
+//      }
   }
   
-  if(HorizontalLimitInttrupt_Pin == GPIO_Pin)
+  
+  if(HorInputSingle_Pin == GPIO_Pin)
   {
-    HAL_Delay(1);
-    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(HorizontalLimitInttrupt_GPIO_Port,HorizontalLimitInttrupt_Pin))
-    {
-      gHorizontalLimitFlag = 1;         //闸机处于关闭状态
-      gMotorState = 0;
-    }
-    else
-    {
-      gHorizontalLimitFlag = 0;         
-    }    
-  } 
+    HAL_Delay(2);
+    
+//    if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(HorInputSingle_GPIO_Port,HorInputSingle_Pin))
+//    {
+      gGateMachine.HorizontalRasterState = 1;
+      gGateMachine.VerticalRasterState = 0;
+      BSP_Motor_Stop();
+      gGateMachine.RunningState = 0;
+      gGateMachine.RunDir = 0;
+//    }
+  }
 }
 
 /**
@@ -296,26 +316,51 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
    */
   if(htim->Instance == htim4.Instance)
   {
-    if(1 == gMotorState)
-    {
-      if(GPIO_PIN_SET == HAL_GPIO_ReadPin(VerticalLimitInttrupt_GPIO_Port,VerticalLimitInttrupt_Pin))
-      {
-        gVerticalLimitFlag = 1;        //闸机处于开启状态
-      }
-      else
-      {
-        gVerticalLimitFlag = 0;
-      }
-      
-      if(GPIO_PIN_SET == HAL_GPIO_ReadPin(HorizontalLimitInttrupt_GPIO_Port,HorizontalLimitInttrupt_Pin))
-      {
-        gHorizontalLimitFlag = 1;         //闸机处于关闭状态
-      }
-      else
-      {
-        gHorizontalLimitFlag = 0;         
-      } 
-    }
+//    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(VerIntputSingle_GPIO_Port,VerIntputSingle_Pin))
+//    {
+//      gGateMachine.VerticalRasterState = 1;
+//      if(1 == gGateMachine.RunDir)
+//      {
+//          if(1 == gGateMachine.RunningState)
+//          {
+//            BSP_Motor_Stop();
+//            gGateMachine.RunningState = 0;
+//          }
+//          gGateMachine.RunDir = 0;  //关闸方向
+//      }
+//    }
+//    else
+//    {
+//      gGateMachine.VerticalRasterState = 0;
+//    }
+//    
+//    if(GPIO_PIN_SET == HAL_GPIO_ReadPin(HorInputSingle_GPIO_Port,HorInputSingle_Pin))
+//    {
+//      gGateMachine.HorizontalRasterState = 1;
+//      if(0 == gGateMachine.RunDir)
+//      {
+//          if(1 == gGateMachine.RunningState)
+//          {
+//            BSP_Motor_Stop();
+//            gGateMachine.RunningState = 0;
+//          }
+//          gGateMachine.RunDir = 1;  //开闸方向
+//      }
+//    }
+//    else
+//    {
+//      gGateMachine.HorizontalRasterState = 0;
+//    }
+//    
+//    gTIM4Cnt ++;
+//    if(gTIM4Cnt > 1000)
+//    {
+//      if(0 == gGateMachine.RunningState)
+//      {
+//        gGateMachine.RunningState = 1;
+//      }
+//      gTIM4Cnt = 0;
+//    }
   }
 }
 

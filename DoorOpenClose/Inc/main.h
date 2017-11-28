@@ -52,7 +52,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stm32f1xx_hal.h"
+#include "stdint.h"
 /* USER CODE END Includes */
 
 /* Private define ------------------------------------------------------------*/
@@ -69,6 +70,12 @@
 #define VerticalLimitInttrupt_Pin GPIO_PIN_11
 #define VerticalLimitInttrupt_GPIO_Port GPIOB
 #define VerticalLimitInttrupt_EXTI_IRQn EXTI15_10_IRQn
+#define HorInputSingle_Pin GPIO_PIN_12
+#define HorInputSingle_GPIO_Port GPIOB
+#define HorInputSingle_EXTI_IRQn EXTI15_10_IRQn
+#define VerInputSingle_Pin GPIO_PIN_13
+#define VerInputSingle_GPIO_Port GPIOB
+#define VerInputSingle_EXTI_IRQn EXTI15_10_IRQn
 
 /* ########################## Assert Selection ############################## */
 /**
@@ -79,9 +86,20 @@
 
 /* USER CODE BEGIN Private defines */
     typedef enum {
-      UPDir = 0,
-      DownDir = 1
+      UPDir = 1,
+      DownDir = 0
     }RunDir;
+
+typedef struct{
+  uint8_t       VerticalRasterState;            //垂直状态标记位
+  uint8_t       HorizontalRasterState;          //水平状态标记位
+  uint8_t       RunningState;                   //运行状态    0 - 停止  1 - 运行
+  uint8_t       RunDir;                         //运行方向    0 - Down  1 - Up
+  uint16_t      RunningSpeed;                   //开闸速度
+  
+}GATEMACHINE, *pGATEMACHINE;
+
+
 
 /* USER CODE END Private defines */
 

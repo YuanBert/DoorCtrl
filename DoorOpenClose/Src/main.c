@@ -139,17 +139,13 @@ int main(void)
     {
       if(1 == gGateMachine.RunDir)
       {
-        HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_RESET); 
-        HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);
+        BSP_Motor_Running(UPDir);
         gGateMachine.RunningState = 0;
       }
       
       if(0 == gGateMachine.RunDir)
       {
-        HAL_GPIO_WritePin(MotorBRKPin_GPIO_Port,MotorBRKPin_Pin,GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(MotorFRPin_GPIO_Port,MotorFRPin_Pin,GPIO_PIN_SET); 
-        HAL_GPIO_WritePin(MotorENPin_GPIO_Port,MotorENPin_Pin,GPIO_PIN_RESET);
+        BSP_Motor_Running(DownDir);
         gGateMachine.RunningState = 0;
       }
     }
@@ -274,31 +270,21 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
    */
   if(VerInputSingle_Pin == GPIO_Pin)
   {
-     HAL_Delay(2);
-      
-//      if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(VerInputSingle_GPIO_Port,VerInputSingle_Pin))
-//      {
-        gGateMachine.VerticalRasterState = 1;
-        gGateMachine.HorizontalRasterState = 0;
-        BSP_Motor_Stop();
-        gGateMachine.RunningState = 0;
-        gGateMachine.RunDir = 1;
-//      }
+    gGateMachine.VerticalRasterState = 1;
+    gGateMachine.HorizontalRasterState = 0;
+    BSP_Motor_Stop();
+    gGateMachine.RunningState = 0;
+    gGateMachine.RunDir = 1;
   }
   
   
   if(HorInputSingle_Pin == GPIO_Pin)
   {
-    HAL_Delay(2);
-    
-//    if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(HorInputSingle_GPIO_Port,HorInputSingle_Pin))
-//    {
-      gGateMachine.HorizontalRasterState = 1;
-      gGateMachine.VerticalRasterState = 0;
-      BSP_Motor_Stop();
-      gGateMachine.RunningState = 0;
-      gGateMachine.RunDir = 0;
-//    }
+    gGateMachine.HorizontalRasterState = 1;
+    gGateMachine.VerticalRasterState = 0;
+    BSP_Motor_Stop();
+    gGateMachine.RunningState = 0;
+    gGateMachine.RunDir = 0;
   }
 }
 
